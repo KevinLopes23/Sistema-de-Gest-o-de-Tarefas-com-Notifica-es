@@ -15,6 +15,7 @@ public static class DependencyInjection
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<INotificacaoService, NotificacaoService>();
+        services.AddScoped<IUsuarioService, UsuarioService>();
 
         services.AddSingleton<IStatusTransitionStrategy, FluxoPadraoStatusTransitionStrategy>();
 
