@@ -44,4 +44,10 @@ public class Projeto
 
     public int TotalTarefas => _tarefas.Count;
     public int TotalTarefasConcluidas => _tarefas.Count(t => t.Status == StatusTarefa.Concluida);
+
+    /// <summary>
+    /// Permite popular a coleção de tarefas em cenários que não passam pelo fixup automático
+    /// de navegação do EF Core (ex.: testes unitários do domínio isolados de infraestrutura).
+    /// </summary>
+    internal void AdicionarTarefaExistente(Tarefa tarefa) => _tarefas.Add(tarefa);
 }
