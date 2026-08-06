@@ -13,19 +13,13 @@ using TaskManagement.Infrastructure.Persistence;
 using TaskManagement.Infrastructure.Realtime;
 using TaskManagement.Application.Interfaces;
 
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .CreateBootstrapLogger();
+var builder = WebApplication.CreateBuilder(args);
 
-try
+builder.Host.UseSerilog((context, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .Enrich.FromLogContext());
+
 {
-    var builder = WebApplication.CreateBuilder(args);
-
-    builder.Host.UseSerilog((context, services, configuration) => configuration
-        .ReadFrom.Configuration(context.Configuration)
-        .ReadFrom.Services(services)
-        .Enrich.FromLogContext());
-
     const string FrontendCorsPolicy = "FrontendCorsPolicy";
 
     // ---- Camadas da aplicação ----
@@ -126,9 +120,10 @@ try
 
     var app = builder.Build();
 
-    // ---- Migrations + seed automático ----
-    using (var scope = app.Services.CreateScope())
+    // ---- Migrations + seed automático (pulado em testes de integração, que controlam o próprio banco) ----
+    if (!app.Environment.IsEnvironment("Testing"))
     {
+        using var scope = app.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<TaskManagementDbContext>();
         var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
         await DbSeeder.SeedAsync(db, passwordHasher);
@@ -153,14 +148,6 @@ try
     app.MapHub<NotificationHub>("/hubs/notifications");
 
     app.Run();
-}
-catch (Exception ex) when (ex is not HostAbortedException)
-{
-    Log.Fatal(ex, "A aplicação falhou ao iniciar");
-}
-finally
-{
-    Log.CloseAndFlush();
 }
 
 public partial class Program
