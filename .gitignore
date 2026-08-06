@@ -1,0 +1,29 @@
+# ---- .NET ----
+backend/**/bin/
+backend/**/obj/
+*.user
+*.suo
+.vs/
+
+# ---- Node / Frontend ----
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+
+# ---- Env / secrets ----
+.env
+.env.*
+!.env.example
+
+# ---- Logs ----
+*.log
+backend/src/TaskManagement.API/logs/
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+
+# ---- IDE ----
+.idea/
+*.swp
