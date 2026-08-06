@@ -5,6 +5,7 @@ using TaskManagement.Application.DTOs;
 using TaskManagement.Domain.Enums;
 using TaskManagement.IntegrationTests.Fixtures;
 using Xunit;
+using static TaskManagement.IntegrationTests.Fixtures.JsonDefaults;
 
 namespace TaskManagement.IntegrationTests.Controllers;
 
@@ -79,7 +80,7 @@ public class ProjetosControllerTests : IntegrationTestBase
     private static async Task<TarefaDto> CriarTarefaAsync(HttpClient client, int projetoId)
     {
         var response = await client.PostAsJsonAsync("/api/tarefas",
-            new CriarTarefaRequest("Tarefa de teste", null, Prioridade.Media, projetoId, DateTime.UtcNow.AddDays(3), null));
-        return (await response.Content.ReadFromJsonAsync<TarefaDto>())!;
+            new CriarTarefaRequest("Tarefa de teste", null, Prioridade.Media, projetoId, DateTime.UtcNow.AddDays(3), null), Options);
+        return (await response.Content.ReadFromJsonAsync<TarefaDto>(Options))!;
     }
 }

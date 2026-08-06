@@ -5,6 +5,7 @@ using TaskManagement.Application.DTOs;
 using TaskManagement.Domain.Enums;
 using TaskManagement.IntegrationTests.Fixtures;
 using Xunit;
+using static TaskManagement.IntegrationTests.Fixtures.JsonDefaults;
 
 namespace TaskManagement.IntegrationTests.Controllers;
 
@@ -22,7 +23,7 @@ public class DashboardControllerTests : IntegrationTestBase
         var projeto = (await projetoResponse.Content.ReadFromJsonAsync<ProjetoDto>())!;
 
         await client.PostAsJsonAsync("/api/tarefas",
-            new CriarTarefaRequest("Tarefa 1", null, Prioridade.Alta, projeto.Id, DateTime.UtcNow.AddDays(2), null));
+            new CriarTarefaRequest("Tarefa 1", null, Prioridade.Alta, projeto.Id, DateTime.UtcNow.AddDays(2), null), Options);
 
         var response = await client.GetAsync("/api/dashboard/metricas");
 

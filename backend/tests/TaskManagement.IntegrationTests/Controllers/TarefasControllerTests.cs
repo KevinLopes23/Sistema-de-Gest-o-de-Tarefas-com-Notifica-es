@@ -5,6 +5,7 @@ using TaskManagement.Application.DTOs;
 using TaskManagement.Domain.Enums;
 using TaskManagement.IntegrationTests.Fixtures;
 using Xunit;
+using static TaskManagement.IntegrationTests.Fixtures.JsonDefaults;
 
 namespace TaskManagement.IntegrationTests.Controllers;
 
@@ -23,13 +24,13 @@ public class TarefasControllerTests : IntegrationTestBase
 
         tarefa.Status.Should().Be(StatusTarefa.Pendente);
 
-        var emAndamento = await client.PatchAsJsonAsync($"/api/tarefas/{tarefa.Id}/status", new AlterarStatusTarefaRequest(StatusTarefa.EmAndamento));
+        var emAndamento = await client.PatchAsJsonAsync($"/api/tarefas/{tarefa.Id}/status", new AlterarStatusTarefaRequest(StatusTarefa.EmAndamento), Options);
         emAndamento.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var concluida = await client.PatchAsJsonAsync($"/api/tarefas/{tarefa.Id}/status", new AlterarStatusTarefaRequest(StatusTarefa.Concluida));
+        var concluida = await client.PatchAsJsonAsync($"/api/tarefas/{tarefa.Id}/status", new AlterarStatusTarefaRequest(StatusTarefa.Concluida), Options);
         concluida.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var tarefaConcluida = await concluida.Content.ReadFromJsonAsync<TarefaDto>();
+        var tarefaConcluida = await concluida.Content.ReadFromJsonAsync<TarefaDto>(Options);
         tarefaConcluida!.Status.Should().Be(StatusTarefa.Concluida);
         tarefaConcluida.DataConclusao.Should().NotBeNull();
     }
@@ -41,7 +42,7 @@ public class TarefasControllerTests : IntegrationTestBase
         var projeto = await CriarProjetoAsync(client);
         var tarefa = await CriarTarefaAsync(client, projeto.Id);
 
-        var response = await client.PatchAsJsonAsync($"/api/tarefas/{tarefa.Id}/status", new AlterarStatusTarefaRequest(StatusTarefa.Concluida));
+        var response = await client.PatchAsJsonAsync($"/api/tarefas/{tarefa.Id}/status", new AlterarStatusTarefaRequest(StatusTarefa.Concluida), Options);
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
@@ -52,7 +53,7 @@ public class TarefasControllerTests : IntegrationTestBase
         var client = await CreateAuthenticatedClientAsync();
         var projeto = await CriarProjetoAsync(client);
         var tarefa = await CriarTarefaAsync(client, projeto.Id);
-        await client.PatchAsJsonAsync($"/api/tarefas/{tarefa.Id}/status", new AlterarStatusTarefaRequest(StatusTarefa.EmAndamento));
+        await client.PatchAsJsonAsync($"/api/tarefas/{tarefa.Id}/status", new AlterarStatusTarefaRequest(StatusTarefa.EmAndamento), Options);
 
         var response = await client.DeleteAsync($"/api/tarefas/{tarefa.Id}");
 
@@ -78,10 +79,10 @@ public class TarefasControllerTests : IntegrationTestBase
         var projeto = await CriarProjetoAsync(client);
         var tarefaPendente = await CriarTarefaAsync(client, projeto.Id);
         var tarefaEmAndamento = await CriarTarefaAsync(client, projeto.Id);
-        await client.PatchAsJsonAsync($"/api/tarefas/{tarefaEmAndamento.Id}/status", new AlterarStatusTarefaRequest(StatusTarefa.EmAndamento));
+        await client.PatchAsJsonAsync($"/api/tarefas/{tarefaEmAndamento.Id}/status", new AlterarStatusTarefaRequest(StatusTarefa.EmAndamento), Options);
 
         var response = await client.GetAsync($"/api/tarefas?projetoId={projeto.Id}&status={StatusTarefa.Pendente}");
-        var tarefas = await response.Content.ReadFromJsonAsync<List<TarefaDto>>();
+        var tarefas = await response.Content.ReadFromJsonAsync<List<TarefaDto>>(Options);
 
         tarefas.Should().ContainSingle(t => t.Id == tarefaPendente.Id);
         tarefas.Should().NotContain(t => t.Id == tarefaEmAndamento.Id);
@@ -89,14 +90,14 @@ public class TarefasControllerTests : IntegrationTestBase
 
     private static async Task<ProjetoDto> CriarProjetoAsync(HttpClient client)
     {
-        var response = await client.PostAsJsonAsync("/api/projetos", new CriarProjetoRequest($"Projeto {Guid.NewGuid():N}", null));
-        return (await response.Content.ReadFromJsonAsync<ProjetoDto>())!;
+        var response = await client.PostAsJsonAsync("/api/projetos", new CriarProjetoRequest($"Projeto {Guid.NewGuid():N}", null), Options);
+        return (await response.Content.ReadFromJsonAsync<ProjetoDto>(Options))!;
     }
 
     private static async Task<TarefaDto> CriarTarefaAsync(HttpClient client, int projetoId)
     {
         var response = await client.PostAsJsonAsync("/api/tarefas",
-            new CriarTarefaRequest("Tarefa de teste", null, Prioridade.Media, projetoId, DateTime.UtcNow.AddDays(3), null));
-        return (await response.Content.ReadFromJsonAsync<TarefaDto>())!;
+            new CriarTarefaRequest("Tarefa de teste", null, Prioridade.Media, projetoId, DateTime.UtcNow.AddDays(3), null), Options);
+        return (await response.Content.ReadFromJsonAsync<TarefaDto>(Options))!;
     }
 }
