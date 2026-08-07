@@ -43,7 +43,9 @@ export function LoginPage() {
 
   return (
     <div className="flex min-h-screen bg-slate-50 dark:bg-ink-950">
-      <ThemeToggle className="fixed right-4 top-4 z-10 bg-white/80 backdrop-blur-sm dark:bg-slate-900/80" />
+      <div className="fixed right-4 top-4 z-20">
+        <ThemeToggle className="bg-white/80 backdrop-blur-sm dark:bg-slate-900/80" />
+      </div>
 
       <div className="relative hidden flex-1 flex-col justify-between overflow-hidden bg-ink-950 p-10 text-white lg:flex">
         <div

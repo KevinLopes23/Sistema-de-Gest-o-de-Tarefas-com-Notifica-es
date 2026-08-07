@@ -98,7 +98,7 @@ export function TarefaFormModal({ open, onClose, tarefa, projetoIdPadrao }: Tare
           <Textarea id="descricao" {...register('descricao')} />
         </FieldWrapper>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FieldWrapper label="Projeto" htmlFor="projetoId" error={errors.projetoId?.message}>
             <Select id="projetoId" disabled={isEditing} {...register('projetoId')}>
               <option value="0">Selecione…</option>
@@ -120,7 +120,7 @@ export function TarefaFormModal({ open, onClose, tarefa, projetoIdPadrao }: Tare
           </FieldWrapper>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FieldWrapper label="Prazo" htmlFor="dataPrazo" error={errors.dataPrazo?.message}>
             <Input id="dataPrazo" type="datetime-local" {...register('dataPrazo')} />
           </FieldWrapper>

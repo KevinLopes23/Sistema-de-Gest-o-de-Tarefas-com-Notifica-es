@@ -44,7 +44,9 @@ export function RegisterPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-50 p-6 dark:bg-ink-950">
-      <ThemeToggle className="fixed right-4 top-4 z-10 bg-white/80 backdrop-blur-sm dark:bg-slate-900/80" />
+      <div className="fixed right-4 top-4 z-20">
+        <ThemeToggle className="bg-white/80 backdrop-blur-sm dark:bg-slate-900/80" />
+      </div>
 
       <div
         className="absolute -right-32 -top-32 h-96 w-96 animate-blob rounded-full bg-gradient-to-br from-brand-200 to-brand-400 opacity-40 blur-3xl dark:opacity-20"

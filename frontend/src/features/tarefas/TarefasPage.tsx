@@ -104,7 +104,7 @@ export function TarefasPage() {
         <Select
           value={filtro.projetoId ?? ''}
           onChange={(e) => setFiltro((f) => ({ ...f, projetoId: e.target.value ? Number(e.target.value) : undefined }))}
-          className="w-auto"
+          className="w-full sm:w-auto"
         >
           <option value="">Todos os projetos</option>
           {projetos.map((p) => (
@@ -117,7 +117,7 @@ export function TarefasPage() {
         <Select
           value={filtro.status ?? ''}
           onChange={(e) => setFiltro((f) => ({ ...f, status: (e.target.value || undefined) as StatusTarefa | undefined }))}
-          className="w-auto"
+          className="w-full sm:w-auto"
         >
           <option value="">Todos os status</option>
           <option value="Pendente">Pendente</option>
@@ -129,7 +129,7 @@ export function TarefasPage() {
         <Select
           value={filtro.responsavelId ?? ''}
           onChange={(e) => setFiltro((f) => ({ ...f, responsavelId: e.target.value ? Number(e.target.value) : undefined }))}
-          className="w-auto"
+          className="w-full sm:w-auto"
         >
           <option value="">Todos os responsáveis</option>
           {responsaveis.map(([id, nome]) => (
@@ -142,7 +142,7 @@ export function TarefasPage() {
         <Select
           value={filtro.ordenarPor ?? 'prazo'}
           onChange={(e) => setFiltro((f) => ({ ...f, ordenarPor: e.target.value as TarefaFiltro['ordenarPor'] }))}
-          className="w-auto"
+          className="w-full sm:w-auto"
         >
           <option value="prazo">Ordenar por prazo</option>
           <option value="prioridade">Ordenar por prioridade</option>
