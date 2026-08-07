@@ -6,7 +6,7 @@ export function Spinner({ className }: { className?: string }) {
       role="status"
       aria-label="Carregando"
       className={clsx(
-        'h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-brand-600',
+        'h-8 w-8 animate-spin rounded-full border-4 border-slate-200 border-t-brand-600 dark:border-slate-700 dark:border-t-brand-400',
         className,
       )}
     />

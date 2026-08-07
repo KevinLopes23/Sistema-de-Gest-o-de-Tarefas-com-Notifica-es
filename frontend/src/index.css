@@ -1,19 +1,82 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --font-sans: "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Nunito", "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
 
   /* Paleta baseada no roxo da marca Moovefy (logo do camaleão) */
-  --color-brand-50: #f5f3ff;
-  --color-brand-100: #ede9fe;
-  --color-brand-200: #ddd6fe;
-  --color-brand-300: #c4b5fd;
-  --color-brand-400: #a78bfa;
-  --color-brand-500: #8b5cf6;
+  --color-brand-50: #f6f4ff;
+  --color-brand-100: #ede8ff;
+  --color-brand-200: #ddd3ff;
+  --color-brand-300: #c3b0ff;
+  --color-brand-400: #a98bfd;
+  --color-brand-500: #9161f9;
   --color-brand-600: #7c3aed;
-  --color-brand-700: #6d28d9;
-  --color-brand-800: #5b21b6;
-  --color-brand-900: #4c1d95;
+  --color-brand-700: #6a28d9;
+  --color-brand-800: #5620ad;
+  --color-brand-900: #451c87;
+
+  /* Verde-menta usado nos selos "novo" do site institucional */
+  --color-mint-100: #d7fbe8;
+  --color-mint-600: #0d9f6e;
+
+  /* Tons quase-neutros com leve tintura violeta, para fundos e seções escuras */
+  --color-ink-950: #16101f;
+  --color-ink-900: #1e1730;
+  --color-ink-800: #2a2140;
+
+  --shadow-glow: 0 20px 45px -15px rgb(124 58 237 / 0.45);
+  --shadow-glow-lg: 0 30px 60px -12px rgb(124 58 237 / 0.35);
+
+  --animate-blob: blob 12s ease-in-out infinite;
+  --animate-fade-in-up: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fade-in 0.4s ease-out both;
+  --animate-pop: pop 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes blob {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(3%, -4%) scale(1.08);
+    }
+    66% {
+      transform: translate(-2%, 3%) scale(0.95);
+    }
+  }
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 }
 
 :root {
@@ -25,4 +88,42 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #fafafd;
+  transition: background-color 0.2s ease;
+}
+
+.dark body {
+  background-color: var(--color-ink-950);
+}
+
+::selection {
+  background-color: var(--color-brand-200);
+  color: var(--color-brand-900);
+}
+
+/* Scrollbar discreta, no espírito do site institucional */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-brand-200);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

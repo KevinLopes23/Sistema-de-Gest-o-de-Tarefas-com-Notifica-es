@@ -5,7 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import moovefyLogo from '@/assets/moovefy-logo.png';
 import { Button } from '@/components/ui/Button';
-import { FieldWrapper, Input } from '@/components/ui/Input';
+import { FieldWrapper, Input, PasswordInput } from '@/components/ui/Input';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { useLoginMutation } from '@/api/authApi';
 import { useAppDispatch } from '@/app/hooks';
 import { credenciaisRecebidas } from './authSlice';
@@ -41,34 +42,57 @@ export function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen">
-      <div className="hidden flex-1 flex-col justify-between bg-gradient-to-br from-brand-700 via-brand-500 to-teal-400 p-10 text-white lg:flex">
-        <div className="flex items-center gap-2">
-          <img src={moovefyLogo} alt="Moovefy" className="h-9 w-9 brightness-0 invert" />
-          <span className="text-xl font-semibold">Moovefy Tasks</span>
+    <div className="flex min-h-screen bg-slate-50 dark:bg-ink-950">
+      <ThemeToggle className="fixed right-4 top-4 z-10 bg-white/80 backdrop-blur-sm dark:bg-slate-900/80" />
+
+      <div className="relative hidden flex-1 flex-col justify-between overflow-hidden bg-ink-950 p-10 text-white lg:flex">
+        <div
+          className="absolute -right-24 -top-24 h-96 w-96 animate-blob rounded-full bg-gradient-to-br from-brand-500 to-brand-700 opacity-40 blur-3xl"
+          aria-hidden
+        />
+        <div
+          className="absolute -bottom-32 -left-16 h-80 w-80 animate-blob rounded-full bg-brand-600 opacity-30 blur-3xl [animation-delay:-4s]"
+          aria-hidden
+        />
+
+        <div className="relative flex animate-fade-in-up items-center gap-2.5 [animation-delay:0ms]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10">
+            <img src={moovefyLogo} alt="" className="h-7 w-7" />
+          </div>
+          <span className="text-xl font-extrabold tracking-tight">Moovefy Tasks</span>
         </div>
-        <div>
-          <h1 className="text-3xl font-semibold leading-tight">
-            Gestão de tarefas em equipe,
-            <br />
-            com notificações em tempo real.
+
+        <div className="relative">
+          <p className="mb-3 animate-fade-in-up text-xs font-bold uppercase tracking-[0.2em] text-brand-300 [animation-delay:80ms]">
+            // gestão de equipes
+          </p>
+          <h1 className="animate-fade-in-up text-4xl font-extrabold leading-tight [animation-delay:160ms]">
+            Tecnologia que move
+            <br />o seu <span className="bg-gradient-to-r from-brand-300 to-brand-500 bg-clip-text text-transparent">time</span>.
           </h1>
-          <p className="mt-3 max-w-md text-sm text-white/80">
-            Organize projetos, acompanhe prazos e mantenha seu time alinhado com atualizações instantâneas.
+          <p className="mt-4 max-w-md animate-fade-in-up text-sm text-white/70 [animation-delay:260ms]">
+            Organize projetos, acompanhe prazos e mantenha sua equipe alinhada com notificações em tempo real.
           </p>
         </div>
-        <p className="text-xs text-white/60">Sistema de Gestão de Tarefas · Moovefy</p>
+
+        <p className="relative animate-fade-in-up text-xs text-white/40 [animation-delay:360ms]">
+          Sistema de Gestão de Tarefas · Moovefy
+        </p>
       </div>
 
-      <div className="flex flex-1 items-center justify-center bg-slate-50 p-6">
-        <div className="w-full max-w-sm">
-          <div className="mb-8 flex items-center gap-2 lg:hidden">
-            <img src={moovefyLogo} alt="Moovefy" className="h-8 w-8" />
-            <span className="text-lg font-semibold text-slate-900">Moovefy Tasks</span>
+      <div className="flex flex-1 items-center justify-center p-6">
+        <div className="w-full max-w-sm animate-fade-in-up [animation-delay:120ms]">
+          <div className="mb-8 flex items-center gap-2.5 lg:hidden">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-50 to-brand-100 dark:from-slate-800 dark:to-slate-800">
+              <img src={moovefyLogo} alt="" className="h-7 w-7" />
+            </div>
+            <span className="text-lg font-extrabold tracking-tight text-slate-900 dark:text-white">
+              Moovefy <span className="text-brand-600 dark:text-brand-400">Tasks</span>
+            </span>
           </div>
 
-          <h2 className="text-2xl font-semibold text-slate-900">Entrar</h2>
-          <p className="mt-1 text-sm text-slate-500">Acesse sua conta para continuar.</p>
+          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Entrar</h2>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Acesse sua conta para continuar.</p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-6 flex flex-col gap-4" noValidate>
             <FieldWrapper label="Email" htmlFor="email" error={errors.email?.message}>
@@ -76,7 +100,7 @@ export function LoginPage() {
             </FieldWrapper>
 
             <FieldWrapper label="Senha" htmlFor="senha" error={errors.senha?.message}>
-              <Input id="senha" type="password" autoComplete="current-password" {...register('senha')} />
+              <PasswordInput id="senha" autoComplete="current-password" {...register('senha')} />
             </FieldWrapper>
 
             <Button type="submit" loading={isLoading} className="mt-2 w-full">
@@ -84,14 +108,14 @@ export function LoginPage() {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-slate-500">
+          <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
             Não tem uma conta?{' '}
-            <Link to="/registrar" className="font-medium text-brand-600 hover:text-brand-700">
+            <Link to="/registrar" className="font-bold text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300">
               Cadastre-se
             </Link>
           </p>
 
-          <div className="mt-6 rounded-lg bg-slate-100 px-4 py-3 text-xs text-slate-500">
+          <div className="mt-6 rounded-xl bg-brand-50/70 px-4 py-3 text-xs text-brand-800 ring-1 ring-inset ring-brand-100 dark:bg-brand-500/10 dark:text-brand-300 dark:ring-brand-500/20">
             Credenciais de teste: <strong>admin@moovefy.com</strong> / <strong>Admin@123</strong>
           </div>
         </div>

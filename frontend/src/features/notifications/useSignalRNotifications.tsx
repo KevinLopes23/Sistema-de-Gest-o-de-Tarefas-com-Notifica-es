@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import * as signalR from '@microsoft/signalr';
 import toast from 'react-hot-toast';
+import { Bell } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { apiClient } from '@/api/apiClient';
 import type { Notificacao } from '@/types';
@@ -24,7 +25,7 @@ export function useSignalRNotifications() {
       .build();
 
     connection.on('ReceberNotificacao', (notificacao: Notificacao) => {
-      toast.success(notificacao.mensagem, { icon: '🔔' });
+      toast.success(notificacao.mensagem, { icon: <Bell className="h-4 w-4 text-brand-600" /> });
       dispatch(apiClient.util.invalidateTags([{ type: 'Notificacao', id: 'LIST' }]));
     });
 

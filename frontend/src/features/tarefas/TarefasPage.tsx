@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import toast from 'react-hot-toast';
+import { ArrowRight, Pencil, Play, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Select } from '@/components/ui/Input';
 import { FullPageSpinner } from '@/components/ui/Spinner';
@@ -19,9 +20,9 @@ const proximoStatus: Partial<Record<StatusTarefa, StatusTarefa>> = {
   EmAndamento: 'Concluida',
 };
 
-const proximoStatusLabel: Partial<Record<StatusTarefa, string>> = {
-  Pendente: 'Iniciar',
-  EmAndamento: 'Concluir',
+const proximoStatusConfig: Partial<Record<StatusTarefa, { label: string; icon: typeof Play }>> = {
+  Pendente: { label: 'Iniciar', icon: Play },
+  EmAndamento: { label: 'Concluir', icon: ArrowRight },
 };
 
 export function TarefasPage() {
@@ -89,13 +90,17 @@ export function TarefasPage() {
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold text-slate-900">Tarefas</h1>
-          <p className="text-sm text-slate-500">Acompanhe e gerencie as tarefas da equipe.</p>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-brand-500 dark:text-brand-400">// acompanhamento</p>
+          <h1 className="mt-1 text-2xl font-extrabold text-slate-900 dark:text-white">Tarefas</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Acompanhe e gerencie as tarefas da equipe.</p>
         </div>
-        <Button onClick={abrirCriacao}>+ Nova tarefa</Button>
+        <Button onClick={abrirCriacao}>
+          <Plus className="h-4 w-4" aria-hidden />
+          Nova tarefa
+        </Button>
       </div>
 
-      <div className="mb-4 flex flex-wrap gap-3 rounded-xl border border-slate-200 bg-white p-4">
+      <div className="mb-4 flex flex-wrap gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
         <Select
           value={filtro.projetoId ?? ''}
           onChange={(e) => setFiltro((f) => ({ ...f, projetoId: e.target.value ? Number(e.target.value) : undefined }))}
@@ -152,63 +157,78 @@ export function TarefasPage() {
         <EmptyState
           title="Nenhuma tarefa encontrada"
           description="Ajuste os filtros ou crie uma nova tarefa."
-          action={<Button onClick={abrirCriacao}>+ Nova tarefa</Button>}
+          action={
+            <Button onClick={abrirCriacao}>
+              <Plus className="h-4 w-4" aria-hidden />
+              Nova tarefa
+            </Button>
+          }
         />
       )}
 
       {!isLoading && tarefas && tarefas.length > 0 && (
-        <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+        <div className="animate-fade-in-up overflow-x-auto rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
           <table className="w-full min-w-[720px] text-left text-sm">
-            <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase text-slate-500">
+            <thead className="border-b border-slate-200 bg-slate-50 text-xs font-bold uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:bg-slate-800/50 dark:text-slate-400">
               <tr>
-                <th className="px-4 py-3 font-medium">Tarefa</th>
-                <th className="px-4 py-3 font-medium">Projeto</th>
-                <th className="px-4 py-3 font-medium">Status</th>
-                <th className="px-4 py-3 font-medium">Prioridade</th>
-                <th className="px-4 py-3 font-medium">Prazo</th>
-                <th className="px-4 py-3 font-medium">Responsável</th>
-                <th className="px-4 py-3 font-medium text-right">Ações</th>
+                <th className="px-4 py-3 font-bold">Tarefa</th>
+                <th className="px-4 py-3 font-bold">Projeto</th>
+                <th className="px-4 py-3 font-bold">Status</th>
+                <th className="px-4 py-3 font-bold">Prioridade</th>
+                <th className="px-4 py-3 font-bold">Prazo</th>
+                <th className="px-4 py-3 font-bold">Responsável</th>
+                <th className="px-4 py-3 text-right font-bold">Ações</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
-              {tarefas.map((tarefa) => (
-                <tr key={tarefa.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium text-slate-900">{tarefa.titulo}</td>
-                  <td className="px-4 py-3 text-slate-500">{tarefa.projetoNome}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex flex-col gap-1">
-                      <StatusBadge status={tarefa.status} />
-                      {tarefa.isAtrasada && <AtrasadaBadge />}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <PrioridadeBadge prioridade={tarefa.prioridade} />
-                  </td>
-                  <td className="px-4 py-3 text-slate-500">
-                    {format(new Date(tarefa.dataPrazo), "dd/MM/yyyy HH:mm", { locale: ptBR })}
-                  </td>
-                  <td className="px-4 py-3 text-slate-500">{tarefa.responsavelNome ?? '—'}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex justify-end gap-1">
-                      {proximoStatus[tarefa.status] && (
-                        <Button variant="ghost" className="px-2" onClick={() => avancarStatus(tarefa)}>
-                          {proximoStatusLabel[tarefa.status]}
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              {tarefas.map((tarefa) => {
+                const proximo = proximoStatusConfig[tarefa.status];
+                return (
+                  <tr
+                    key={tarefa.id}
+                    data-testid="tarefa-row"
+                    className="transition-colors hover:bg-brand-50/40 dark:hover:bg-brand-500/5"
+                  >
+                    <td className="px-4 py-3 font-bold text-slate-900 dark:text-white">{tarefa.titulo}</td>
+                    <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{tarefa.projetoNome}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex flex-col gap-1">
+                        <StatusBadge status={tarefa.status} />
+                        {tarefa.isAtrasada && <AtrasadaBadge />}
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <PrioridadeBadge prioridade={tarefa.prioridade} />
+                    </td>
+                    <td className="px-4 py-3 text-slate-500 dark:text-slate-400">
+                      {format(new Date(tarefa.dataPrazo), "dd/MM/yyyy HH:mm", { locale: ptBR })}
+                    </td>
+                    <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{tarefa.responsavelNome ?? '—'}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex justify-end gap-1">
+                        {proximo && (
+                          <Button variant="ghost" className="px-2" onClick={() => avancarStatus(tarefa)}>
+                            <proximo.icon className="h-4 w-4" aria-hidden />
+                            {proximo.label}
+                          </Button>
+                        )}
+                        <Button variant="ghost" className="px-2" onClick={() => abrirEdicao(tarefa)}>
+                          <Pencil className="h-4 w-4" aria-hidden />
+                          Editar
                         </Button>
-                      )}
-                      <Button variant="ghost" className="px-2" onClick={() => abrirEdicao(tarefa)}>
-                        Editar
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className="px-2 text-red-600"
-                        onClick={() => setTarefaParaExcluir(tarefa)}
-                      >
-                        Excluir
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                        <Button
+                          variant="ghost"
+                          className="px-2 text-red-600 dark:text-red-400"
+                          onClick={() => setTarefaParaExcluir(tarefa)}
+                        >
+                          <Trash2 className="h-4 w-4" aria-hidden />
+                          Excluir
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
