@@ -128,7 +128,7 @@ Ver também [`docs/architecture.md`](docs/architecture.md) para um diagrama da a
 **Para que usei (boilerplate, geração de código, testes):**
 - **Boilerplate e scaffolding:** criação da solução .NET, estrutura de projetos, configuração do Vite/Tailwind e migrations do EF Core.
 - **Geração de código a partir de diretrizes:** implementação das camadas, entidades de domínio, services, controllers, componentes React e configurações de Docker e CI/CD.
-- **Testes:** escrita dos 44 testes unitários e 15 de integração cobrindo as regras de negócio do enunciado, os quais revisei, executei e utilizei para validar o comportamento da aplicação.
+- **Testes:** escrita dos 46 testes unitários e 15 de integração cobrindo as regras de negócio do enunciado, os quais revisei, executei e utilizei para validar o comportamento da aplicação.
 
 **O que adaptei ou melhorei do código gerado:**
 - **Identificação e correção de um bug real de integração:** depois de subir o ambiente via Docker Compose, executei chamadas HTTP reais contra os containers simulando requisições do frontend. Isso revelou que a API serializava enums (`Prioridade`, `StatusTarefa`) como inteiros, enquanto o frontend e o Swagger esperavam strings (`"Alta"`, `"Pendente"`). Os testes automatizados não pegaram esse ponto por usarem a mesma convenção default do .NET nos dois lados — só apareceu testando contra um payload JSON "cru", do jeito que o navegador realmente manda. Corrigi configurando o `JsonStringEnumConverter` globalmente e ajustando os testes de integração.
@@ -188,7 +188,7 @@ Gera um `coverage.cobertura.xml` em `TestResults/`, que pode ser visualizado com
 
 Acima do mínimo de 50% pedido no enunciado para as regras de negócio. A camada Infrastructure (EF Core, JWT, SignalR) não é exercitada pelos testes unitários por design — é validada pelos 15 testes de integração, que sobem o pipeline HTTP completo.
 
-**Resumo:** 44 testes unitários + 15 testes de integração, 59 no total, 0 falhas.
+**Resumo:** 46 testes unitários + 15 testes de integração, 61 no total, 0 falhas.
 
 ---
 
