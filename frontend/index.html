@@ -18,8 +18,146 @@
         if (dark) document.documentElement.classList.add('dark');
       })();
     </script>
+    <!--
+      Preloader inline (CSS + markup fora do bundle React) para pintar antes mesmo do
+      JS carregar, igual à técnica usada em moovefy.com: um círculo roxo que expande
+      cobrindo a tela enquanto o logo gira e troca de roxo pra branco, e depois sobe
+      como uma cortina revelando a página.
+    -->
+    <style>
+      #app-preloader {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fafafd;
+        transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1);
+        will-change: transform;
+      }
+      html.dark #app-preloader {
+        background: #16101f;
+      }
+      #app-preloader.pl-open {
+        transform: translateY(-100%);
+      }
+
+      #app-preloader .pl-fill {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: #7c3aed;
+        transform: translate(-50%, -50%) scale(0);
+        animation: pl-fill 1.5s cubic-bezier(0.66, 0, 0.34, 1) forwards;
+      }
+      @keyframes pl-fill {
+        0%,
+        36% {
+          transform: translate(-50%, -50%) scale(0);
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(46);
+        }
+      }
+
+      #app-preloader .pl-logo {
+        position: relative;
+        z-index: 2;
+        width: 88px;
+        height: 88px;
+        animation: pl-spin 1.5s cubic-bezier(0.5, 0, 0.2, 1) forwards;
+      }
+      @keyframes pl-spin {
+        0% {
+          transform: rotate(0) scale(0.3);
+          opacity: 0;
+        }
+        18% {
+          opacity: 1;
+        }
+        46% {
+          transform: rotate(560deg) scale(1.3);
+        }
+        74% {
+          transform: rotate(720deg) scale(1);
+        }
+        100% {
+          transform: rotate(720deg) scale(1);
+          opacity: 1;
+        }
+      }
+
+      #app-preloader .pl-mark {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      #app-preloader .pl-mark-w {
+        filter: brightness(0) invert(1);
+        opacity: 0;
+        animation: pl-show 1.5s linear forwards;
+      }
+      #app-preloader .pl-mark-p {
+        animation: pl-hide 1.5s linear forwards;
+      }
+      @keyframes pl-hide {
+        0%,
+        42% {
+          opacity: 1;
+        }
+        52%,
+        100% {
+          opacity: 0;
+        }
+      }
+      @keyframes pl-show {
+        0%,
+        42% {
+          opacity: 0;
+        }
+        52%,
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #app-preloader {
+          transition: none;
+        }
+        #app-preloader .pl-fill,
+        #app-preloader .pl-logo,
+        #app-preloader .pl-mark-p,
+        #app-preloader .pl-mark-w {
+          animation: none;
+        }
+        #app-preloader .pl-fill {
+          transform: translate(-50%, -50%) scale(46);
+        }
+        #app-preloader .pl-mark-p {
+          opacity: 0;
+        }
+        #app-preloader .pl-mark-w {
+          opacity: 1;
+        }
+      }
+    </style>
   </head>
   <body>
+    <div id="app-preloader" aria-hidden="true">
+      <span class="pl-fill"></span>
+      <div class="pl-logo">
+        <img class="pl-mark pl-mark-p" src="/moovefy-logo.png" alt="" />
+        <img class="pl-mark pl-mark-w" src="/moovefy-logo.png" alt="" />
+      </div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

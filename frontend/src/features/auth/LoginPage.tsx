@@ -42,7 +42,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-ink-950">
+    <div className="flex min-h-screen animate-page-in bg-slate-50 dark:bg-ink-950">
       <div className="fixed right-4 top-4 z-20">
         <ThemeToggle className="bg-white/80 backdrop-blur-sm dark:bg-slate-900/80" />
       </div>
@@ -57,7 +57,7 @@ export function LoginPage() {
           aria-hidden
         />
 
-        <div className="relative flex animate-fade-in-up items-center gap-2.5 [animation-delay:0ms]">
+        <div className="relative flex items-center gap-2.5">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10">
             <img src={moovefyLogo} alt="" className="h-7 w-7" />
           </div>
@@ -65,25 +65,21 @@ export function LoginPage() {
         </div>
 
         <div className="relative">
-          <p className="mb-3 animate-fade-in-up text-xs font-bold uppercase tracking-[0.2em] text-brand-300 [animation-delay:80ms]">
-            // gestão de equipes
-          </p>
-          <h1 className="animate-fade-in-up text-4xl font-extrabold leading-tight [animation-delay:160ms]">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-brand-300">// gestão de equipes</p>
+          <h1 className="text-4xl font-extrabold leading-tight">
             Tecnologia que move
             <br />o seu <span className="bg-gradient-to-r from-brand-300 to-brand-500 bg-clip-text text-transparent">time</span>.
           </h1>
-          <p className="mt-4 max-w-md animate-fade-in-up text-sm text-white/70 [animation-delay:260ms]">
+          <p className="mt-4 max-w-md text-sm text-white/70">
             Organize projetos, acompanhe prazos e mantenha sua equipe alinhada com notificações em tempo real.
           </p>
         </div>
 
-        <p className="relative animate-fade-in-up text-xs text-white/40 [animation-delay:360ms]">
-          Sistema de Gestão de Tarefas · Moovefy
-        </p>
+        <p className="relative text-xs text-white/40">Sistema de Gestão de Tarefas · Moovefy</p>
       </div>
 
       <div className="flex flex-1 items-center justify-center p-6">
-        <div className="w-full max-w-sm animate-fade-in-up [animation-delay:120ms]">
+        <div className="w-full max-w-sm">
           <div className="mb-8 flex items-center gap-2.5 lg:hidden">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-50 to-brand-100 dark:from-slate-800 dark:to-slate-800">
               <img src={moovefyLogo} alt="" className="h-7 w-7" />

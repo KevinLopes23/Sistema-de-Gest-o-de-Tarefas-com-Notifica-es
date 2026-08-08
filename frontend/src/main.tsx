@@ -18,3 +18,24 @@ createRoot(document.getElementById('root')!).render(
     </ThemeProvider>
   </StrictMode>,
 )
+
+// Sobe a cortina do preloader (ver index.html) depois que a intro de 1.5s termina de
+// tocar, revelando a página. Com prefers-reduced-motion, some na hora, sem transição.
+function dismissPreloader() {
+  const preloader = document.getElementById('app-preloader')
+  if (!preloader) return
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (reduceMotion) {
+    preloader.remove()
+    return
+  }
+
+  window.setTimeout(() => {
+    preloader.classList.add('pl-open')
+    preloader.addEventListener('transitionend', () => preloader.remove(), { once: true })
+    window.setTimeout(() => preloader.remove(), 1000)
+  }, 1500)
+}
+
+dismissPreloader()

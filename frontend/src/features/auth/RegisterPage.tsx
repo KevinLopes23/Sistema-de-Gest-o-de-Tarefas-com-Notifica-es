@@ -57,7 +57,7 @@ export function RegisterPage() {
         aria-hidden
       />
 
-      <div className="relative w-full max-w-sm animate-fade-in-up rounded-3xl bg-white p-8 shadow-glow-lg dark:bg-slate-900">
+      <div className="relative w-full max-w-sm animate-page-in rounded-3xl bg-white p-8 shadow-glow-lg dark:bg-slate-900">
         <div className="mb-8 flex items-center gap-2.5">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-50 to-brand-100 dark:from-slate-800 dark:to-slate-800">
             <img src={moovefyLogo} alt="" className="h-7 w-7" />

@@ -121,7 +121,7 @@ export function AppLayout() {
         </header>
 
         <main className="min-w-0 flex-1 overflow-x-hidden p-4 md:p-6">
-          <div key={location.pathname} className="animate-fade-in-up">
+          <div key={location.pathname} className="animate-page-in">
             <Outlet />
           </div>
         </main>
