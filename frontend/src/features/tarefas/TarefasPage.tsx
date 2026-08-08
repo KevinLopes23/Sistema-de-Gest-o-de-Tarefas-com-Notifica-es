@@ -168,7 +168,7 @@ export function TarefasPage() {
 
       {!isLoading && tarefas && tarefas.length > 0 && (
         <div className="animate-fade-in-up overflow-x-auto rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-          <table className="w-full min-w-[720px] text-left text-sm">
+          <table className="w-full min-w-[860px] text-left text-sm">
             <thead className="border-b border-slate-200 bg-slate-50 text-xs font-bold uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:bg-slate-800/50 dark:text-slate-400">
               <tr>
                 <th className="px-4 py-3 font-bold">Tarefa</th>
@@ -176,6 +176,7 @@ export function TarefasPage() {
                 <th className="px-4 py-3 font-bold">Status</th>
                 <th className="px-4 py-3 font-bold">Prioridade</th>
                 <th className="px-4 py-3 font-bold">Prazo</th>
+                <th className="px-4 py-3 font-bold">Conclusão</th>
                 <th className="px-4 py-3 font-bold">Responsável</th>
                 <th className="px-4 py-3 text-right font-bold">Ações</th>
               </tr>
@@ -202,6 +203,11 @@ export function TarefasPage() {
                     </td>
                     <td className="px-4 py-3 text-slate-500 dark:text-slate-400">
                       {format(new Date(tarefa.dataPrazo), "dd/MM/yyyy HH:mm", { locale: ptBR })}
+                    </td>
+                    <td className="px-4 py-3 text-slate-500 dark:text-slate-400">
+                      {tarefa.dataConclusao
+                        ? format(new Date(tarefa.dataConclusao), "dd/MM/yyyy HH:mm", { locale: ptBR })
+                        : '—'}
                     </td>
                     <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{tarefa.responsavelNome ?? '—'}</td>
                     <td className="px-4 py-3">

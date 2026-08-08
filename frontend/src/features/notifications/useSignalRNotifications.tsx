@@ -26,7 +26,13 @@ export function useSignalRNotifications() {
 
     connection.on('ReceberNotificacao', (notificacao: Notificacao) => {
       toast.success(notificacao.mensagem, { icon: <Bell className="h-4 w-4 text-brand-600" /> });
-      dispatch(apiClient.util.invalidateTags([{ type: 'Notificacao', id: 'LIST' }]));
+      dispatch(
+        apiClient.util.invalidateTags([
+          { type: 'Notificacao', id: 'LIST' },
+          { type: 'Tarefa', id: 'LIST' },
+          'Dashboard',
+        ]),
+      );
     });
 
     connection.start().catch(() => {

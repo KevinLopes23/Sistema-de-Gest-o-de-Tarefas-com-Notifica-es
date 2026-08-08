@@ -37,7 +37,11 @@ export const tarefasApi = apiClient.injectEndpoints({
     }),
     atualizarTarefa: builder.mutation<Tarefa, { id: number; body: AtualizarTarefaRequest }>({
       query: ({ id, body }) => ({ url: `/tarefas/${id}`, method: 'PUT', body }),
-      invalidatesTags: (_r, _e, { id }) => [{ type: 'Tarefa', id }, { type: 'Tarefa', id: 'LIST' }],
+      invalidatesTags: (_r, _e, { id }) => [
+        { type: 'Tarefa', id },
+        { type: 'Tarefa', id: 'LIST' },
+        'Dashboard',
+      ],
     }),
     alterarStatusTarefa: builder.mutation<Tarefa, { id: number; status: StatusTarefa }>({
       query: ({ id, status }) => ({ url: `/tarefas/${id}/status`, method: 'PATCH', body: { status } }),
