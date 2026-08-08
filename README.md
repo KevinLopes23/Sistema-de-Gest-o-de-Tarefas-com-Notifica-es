@@ -194,9 +194,18 @@ Acima do mínimo de 50% pedido no enunciado para as regras de negócio. A camada
 
 ## Extras
 
-- **Vídeo de demonstração:** _[adicionar link aqui]_
-- **Screenshots:** _[adicionar link/imagens aqui]_
+- **Vídeo de demonstração:** [youtu.be/qBHxtUicdbo](https://youtu.be/qBHxtUicdbo)
 - **Diagrama de arquitetura:** [`docs/architecture.md`](docs/architecture.md) (Mermaid, renderiza direto no GitHub) e [`docs/architecture.drawio`](docs/architecture.drawio) (arquivo editável — abra em [draw.io](https://app.diagrams.net/))
+
+### Screenshots
+
+| Login | Dashboard |
+|---|---|
+| ![Login](docs/screenshots/login.png) | ![Dashboard](docs/screenshots/dashboard.png) |
+
+| Projetos | Tarefas |
+|---|---|
+| ![Projetos](docs/screenshots/projetos.png) | ![Tarefas](docs/screenshots/tarefas.png) |
 
 ---
 
