@@ -105,7 +105,7 @@ export function DashboardPage() {
                 innerRadius={60}
                 outerRadius={100}
                 paddingAngle={3}
-                animationDuration={600}
+                isAnimationActive={false}
                 cornerRadius={6}
               >
                 {statusData.map((entry) => (
