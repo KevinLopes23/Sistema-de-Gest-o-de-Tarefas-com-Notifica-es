@@ -68,6 +68,7 @@ public class TarefaService : ITarefaService
             await NotificarAtribuicaoAsync(tarefa, request.ResponsavelId.Value, ct);
 
         InvalidarCacheDashboard();
+        await _realtimeNotifier.NotificarMudancaDadosAsync(ct);
         return await ObterPorIdAsync(tarefa.Id, ct);
     }
 
@@ -88,6 +89,7 @@ public class TarefaService : ITarefaService
             await NotificarAtribuicaoAsync(tarefa, request.ResponsavelId.Value, ct);
 
         InvalidarCacheDashboard();
+        await _realtimeNotifier.NotificarMudancaDadosAsync(ct);
         return await ObterPorIdAsync(id, ct);
     }
 
@@ -104,6 +106,7 @@ public class TarefaService : ITarefaService
         _logger.LogInformation("Tarefa {TarefaId} alterou status para {Status}", id, request.Status);
 
         InvalidarCacheDashboard();
+        await _realtimeNotifier.NotificarMudancaDadosAsync(ct);
         return await ObterPorIdAsync(id, ct);
     }
 
@@ -119,6 +122,7 @@ public class TarefaService : ITarefaService
 
         _logger.LogInformation("Tarefa {TarefaId} excluída", id);
         InvalidarCacheDashboard();
+        await _realtimeNotifier.NotificarMudancaDadosAsync(ct);
     }
 
     private async Task NotificarAtribuicaoAsync(Tarefa tarefa, int responsavelId, CancellationToken ct)

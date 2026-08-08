@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using TaskManagement.Application.DTOs;
+using TaskManagement.Application.Interfaces;
 using TaskManagement.Application.Services;
 using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Enums;
@@ -16,13 +17,14 @@ public class ProjetoServiceTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWork = new();
     private readonly Mock<IProjetoRepository> _projetoRepository = new();
+    private readonly Mock<IRealtimeNotifier> _realtimeNotifier = new();
     private readonly IMemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
     private readonly ProjetoService _sut;
 
     public ProjetoServiceTests()
     {
         _unitOfWork.SetupGet(u => u.Projetos).Returns(_projetoRepository.Object);
-        _sut = new ProjetoService(_unitOfWork.Object, _cache, NullLogger<ProjetoService>.Instance);
+        _sut = new ProjetoService(_unitOfWork.Object, _realtimeNotifier.Object, _cache, NullLogger<ProjetoService>.Instance);
     }
 
     [Fact]
@@ -75,5 +77,17 @@ public class ProjetoServiceTests
 
         _projetoRepository.Verify(r => r.Remove(projeto), Times.Once);
         _unitOfWork.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task ExcluirAsync_deve_notificar_mudanca_de_dados_para_outras_sessoes()
+    {
+        var projeto = new Projeto("Projeto vazio", null);
+        _projetoRepository.Setup(r => r.GetByIdComTarefasAsync(1, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(projeto);
+
+        await _sut.ExcluirAsync(1);
+
+        _realtimeNotifier.Verify(n => n.NotificarMudancaDadosAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }

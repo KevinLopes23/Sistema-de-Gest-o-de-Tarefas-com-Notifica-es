@@ -11,12 +11,15 @@ namespace TaskManagement.Application.Services;
 public class ProjetoService : IProjetoService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IRealtimeNotifier _realtimeNotifier;
     private readonly IMemoryCache _cache;
     private readonly ILogger<ProjetoService> _logger;
 
-    public ProjetoService(IUnitOfWork unitOfWork, IMemoryCache cache, ILogger<ProjetoService> logger)
+    public ProjetoService(
+        IUnitOfWork unitOfWork, IRealtimeNotifier realtimeNotifier, IMemoryCache cache, ILogger<ProjetoService> logger)
     {
         _unitOfWork = unitOfWork;
+        _realtimeNotifier = realtimeNotifier;
         _cache = cache;
         _logger = logger;
     }
@@ -42,6 +45,7 @@ public class ProjetoService : IProjetoService
 
         _logger.LogInformation("Projeto {ProjetoId} '{Nome}' criado", projeto.Id, projeto.Nome);
         InvalidarCacheDashboard();
+        await _realtimeNotifier.NotificarMudancaDadosAsync(ct);
         return Map(projeto);
     }
 
@@ -55,6 +59,7 @@ public class ProjetoService : IProjetoService
         await _unitOfWork.SaveChangesAsync(ct);
 
         _logger.LogInformation("Projeto {ProjetoId} atualizado", id);
+        await _realtimeNotifier.NotificarMudancaDadosAsync(ct);
         return await ObterPorIdAsync(id, ct);
     }
 
@@ -70,6 +75,7 @@ public class ProjetoService : IProjetoService
 
         _logger.LogInformation("Projeto {ProjetoId} excluído", id);
         InvalidarCacheDashboard();
+        await _realtimeNotifier.NotificarMudancaDadosAsync(ct);
     }
 
     private void InvalidarCacheDashboard() => _cache.Remove(DashboardService.CacheKey);

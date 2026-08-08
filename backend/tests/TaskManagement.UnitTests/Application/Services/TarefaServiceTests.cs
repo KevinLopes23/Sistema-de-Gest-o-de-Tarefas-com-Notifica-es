@@ -116,4 +116,15 @@ public class TarefaServiceTests
 
         _realtimeNotifier.Verify(n => n.NotificarUsuarioAsync(9, It.IsAny<NotificacaoDto>(), It.IsAny<CancellationToken>()), Times.Once);
     }
+
+    [Fact]
+    public async Task ExcluirAsync_deve_notificar_mudanca_de_dados_para_outras_sessoes()
+    {
+        var tarefa = CriarTarefa();
+        _tarefaRepository.Setup(r => r.GetByIdAsync(1, It.IsAny<CancellationToken>())).ReturnsAsync(tarefa);
+
+        await _sut.ExcluirAsync(1);
+
+        _realtimeNotifier.Verify(n => n.NotificarMudancaDadosAsync(It.IsAny<CancellationToken>()), Times.Once);
+    }
 }

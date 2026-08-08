@@ -9,4 +9,10 @@ namespace TaskManagement.Application.Interfaces;
 public interface IRealtimeNotifier
 {
     Task NotificarUsuarioAsync(int usuarioId, NotificacaoDto notificacao, CancellationToken ct = default);
+
+    /// <summary>
+    /// Sinaliza a todos os clientes conectados que tarefas/projetos mudaram, para que
+    /// dashboards e listagens abertos em outras sessões se atualizem sem precisar de reload.
+    /// </summary>
+    Task NotificarMudancaDadosAsync(CancellationToken ct = default);
 }
